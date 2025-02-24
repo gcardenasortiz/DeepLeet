@@ -8,11 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const input = inputField.value;
       if (!input) return;
   
+      loader.style.display = 'block';
+      responseDiv.textContent = '';
+  
       try {
         const aiResponse = await queryAI(input);
         responseDiv.textContent = aiResponse;
       } catch (error) {
         responseDiv.textContent = `Error: ${error.message}`;
+      } finally {
+        loader.style.display = 'none';
       }
     });
   });
@@ -26,8 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Include any authentication headers your AI requires
-        // 'Authorization': 'Bearer YOUR_API_KEY'
+        // Include any authentication headers
       },
       body: JSON.stringify({ input: input })
     });
