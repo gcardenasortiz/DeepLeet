@@ -1,3 +1,13 @@
+document.addEventListener('DOMContentLoaded', async () => {
+  const problemDetails = await getProblemDetails();
+  const problemDiv = document.getElementById('problem-details');
+  if (problemDetails) {
+    problemDiv.innerHTML = `<h3>${problemDetails.title}</h3><p>${problemDetails.description}</p>`;
+  } else {
+    problemDiv.textContent = "Not on a LeetCode problem page.";
+  }
+});
+
 const inputField = document.getElementById('input');
 const askButton = document.getElementById('askButton');
 const loader = document.getElementById('loader');
@@ -11,7 +21,7 @@ askButton.addEventListener('click', async () => {
   responseDiv.textContent = '';
 
   try {
-    const problemDetails = getProblemDetails();
+    const problemDetails = await getProblemDetails();
     console.log("Received problemDetails:", problemDetails);
     if (problemDetails) {
       const aiResponse = await queryAI(input, problemDetails);
@@ -40,8 +50,13 @@ async function getProblemDetails() {
   if (tab && tab.url.startsWith('https://leetcode.com/problems/')) {
     return new Promise((resolve) => {
       chrome.tabs.sendMessage(tab.id, { action: 'getProblemDetails' }, (response) => {
-        console.log("Received problemDetails:", response);
-        resolve(response);
+        if (chrome.runtime.lastError) {
+          console.error("Error sending message:", chrome.runtime.lastError);
+          resolve(null);
+        } else {
+          console.log("Received problemDetails:", response);
+          resolve(response);
+        }
       });
     });
   }
