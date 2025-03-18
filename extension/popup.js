@@ -2,7 +2,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   const problemDetails = await getProblemDetails();
   const problemDiv = document.getElementById('problem-details');
   if (problemDetails) {
-    problemDiv.innerHTML = `<h3>${problemDetails.title}</h3><p>${problemDetails.description}</p>`;
+    problemDiv.innerHTML = `
+      <h3>${problemDetails.title}</h3>
+      <p>${problemDetails.description}</p>
+      <h4>Starter Code:</h4>
+      <pre>${problemDetails.starterCode}</pre>
+    `;
   } else {
     problemDiv.textContent = "Not on a LeetCode problem page.";
   }
