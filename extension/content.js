@@ -13,9 +13,9 @@ function getProblemDetails() {
     starterCode = viewLines.map(line => line.innerText).join('\n');
   }
 
-  console.log("titleElem:\n", titleElem);
-  console.log("descriptionElem:\n", descriptionElem);
-  console.log("starterCode:\n", starterCode)
+  //console.log("titleElem:\n", titleElem);
+  //console.log("descriptionElem:\n", descriptionElem);
+  //console.log("starterCode:\n", starterCode)
 
   if (!titleElem || !descriptionElem) return null;
   return {

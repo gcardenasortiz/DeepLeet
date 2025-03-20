@@ -26,8 +26,18 @@ askButton.addEventListener('click', async () => {
 
   try {
     // Simulated server request (replace with actual fetch call when ready)
-    const code = await mockServerRequest();
-
+    const problemDetails = await getProblemDetails();
+    if (problemDetails == null) {
+      throw new Error('Failed to get problem details');
+    }
+    const url = new URL('http://127.0.0.1:8000/generate');
+    url.searchParams.append('statement', problemDetails.description);
+    url.searchParams.append('starter_code', problemDetails.starterCode);
+    const resp = await fetch(url);
+    if (!resp.ok) {
+      throw new Error(`Failed to generate code: status ${resp.status}`);
+    }
+    const code = JSON.parse(await resp.text())
     // Get active tab and paste code
     const tab = await getActiveTab();
     const pasteSuccess = await pasteCodeToTab(tab.id, code);
@@ -53,15 +63,6 @@ askButton.addEventListener('click', async () => {
     askButton.disabled = false;
   }
 });
-
-// Simulated server request (replace with fetch() when backend is ready)
-async function mockServerRequest() {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(`// Sample solution from server\nfunction solution() {\n  // Implementation\n}`);
-    }, 1000);
-  });
-}
 
 async function pasteCodeToTab(tabId, code) {
   return new Promise(resolve => {
