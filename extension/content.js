@@ -2,7 +2,7 @@ console.log("Content script loaded");
 
 function getProblemDetails() {
   let titleElem = document.querySelector('meta[property="og:title"]');
-\
+
   // starter code scraping
   let starterCodeContainer = document.querySelector('.view-lines.monaco-mouse-cursor-text');
   let starterCode = "";
