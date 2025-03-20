@@ -2,8 +2,7 @@ console.log("Content script loaded");
 
 function getProblemDetails() {
   let titleElem = document.querySelector('meta[property="og:title"]');
-  let descriptionElem = document.querySelector('meta[property="og:description"]');
-
+\
   // starter code scraping
   let starterCodeContainer = document.querySelector('.view-lines.monaco-mouse-cursor-text');
   let starterCode = "";
@@ -14,13 +13,11 @@ function getProblemDetails() {
   }
 
   console.log("titleElem:\n", titleElem);
-  console.log("descriptionElem:\n", descriptionElem);
   console.log("starterCode:\n", starterCode)
 
   if (!titleElem || !descriptionElem) return null;
   return {
     title: titleElem.getAttribute('content'),
-    description: descriptionElem.getAttribute('content'),
     starterCode: starterCode
   };
 }
