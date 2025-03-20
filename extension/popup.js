@@ -13,33 +13,71 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-const inputField = document.getElementById('input');
 const askButton = document.getElementById('askButton');
-const loader = document.getElementById('loader');
 const responseDiv = document.getElementById('response');
 
 askButton.addEventListener('click', async () => {
-  const input = inputField.value;
-  if (!input) return;
+  const originalText = askButton.textContent;
 
-  loader.style.display = 'block';
+  // Disable button and show loading state
+  askButton.disabled = true;
+  askButton.textContent = 'Loading...';
   responseDiv.textContent = '';
 
   try {
-    const problemDetails = await getProblemDetails();
-    console.log("Received problemDetails:", problemDetails);
-    if (problemDetails) {
-      const aiResponse = await queryAI(input, problemDetails);
-      responseDiv.textContent = aiResponse;
+    // Simulated server request (replace with actual fetch call when ready)
+    const code = await mockServerRequest();
+
+    // Get active tab and paste code
+    const tab = await getActiveTab();
+    const pasteSuccess = await pasteCodeToTab(tab.id, code);
+
+    if (pasteSuccess) {
+      // Visual feedback for success
+      askButton.classList.add('success');
+      askButton.textContent = 'Answer Pasted!';
+
+      // Reset button after 1 second
+      setTimeout(() => {
+        askButton.classList.remove('success');
+        askButton.textContent = originalText;
+        askButton.disabled = false;
+      }, 1000);
     } else {
-      responseDiv.textContent = "Please open a LeetCode problem page to use this feature.";
+      throw new Error('Failed to paste code into editor');
     }
   } catch (error) {
-    responseDiv.textContent = `Error: ${error.message}`;
-  } finally {
-    loader.style.display = 'none';
+    console.error(error);
+    responseDiv.textContent = error.message;
+    askButton.textContent = originalText;
+    askButton.disabled = false;
   }
 });
+
+// Simulated server request (replace with fetch() when backend is ready)
+async function mockServerRequest() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(`// Sample solution from server\nfunction solution() {\n  // Implementation\n}`);
+    }, 1000);
+  });
+}
+
+async function pasteCodeToTab(tabId, code) {
+  return new Promise(resolve => {
+    chrome.runtime.sendMessage(
+      { action: 'pasteCode', code, tabId },
+      (response) => {
+        if (chrome.runtime.lastError) {
+          console.error('Connection error:', chrome.runtime.lastError);
+          resolve(false);
+        } else {
+          resolve(response?.success || false);
+        }
+      }
+    );
+  });
+}
 
 async function getActiveTab() {
   return new Promise((resolve) => {
@@ -66,10 +104,4 @@ async function getProblemDetails() {
     });
   }
   return null;
-}
-
-// REplace with real API call
-async function queryAI(input, problemDetails) {
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  return `You asked: "${input}" about the problem "${problemDetails.title}". "${problemDetails.description}" DEBUG`;
 }

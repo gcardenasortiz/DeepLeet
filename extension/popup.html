@@ -61,15 +61,25 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
   </style>
+  <style>
+    /* Add new button states */
+    #askButton:disabled {
+      background-color: #6c757d !important;
+      cursor: not-allowed;
+    }
+  
+    #askButton.success {
+      background-color: #28a745 !important;
+    }
+  </style>
 </head>
 <body>
   <header>
     <h2>DeepLeet</h2>
   </header>
   <div id="problem-details"></div>
-  <input type="text" id="input" placeholder="Ask about this problem...">
-  <button id="askButton">Ask DeepLeet</button>
-  <div id="loader">Loading...</div>
+  <button id="askButton">Get Solution</button>
+  <div id="loader"></div>
   <div id="response"></div>
   <script src="popup.js"></script>
 </body>

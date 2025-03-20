@@ -30,4 +30,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const details = getProblemDetails();
     sendResponse(details);
   }
-}); 
+});

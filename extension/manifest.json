@@ -3,6 +3,10 @@
   "name": "DeepLeet",
   "version": "0.1",
   "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["https://leetcode.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["*://leetcode.com/problems/*"],
