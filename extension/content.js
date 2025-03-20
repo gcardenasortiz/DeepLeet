@@ -15,7 +15,7 @@ function getProblemDetails() {
   console.log("titleElem:\n", titleElem);
   console.log("starterCode:\n", starterCode)
 
-  if (!titleElem || !descriptionElem) return null;
+  if (!titleElem) return null;
   return {
     title: titleElem.getAttribute('content'),
     starterCode: starterCode
