@@ -1,0 +1,3 @@
+*.pyc
+*.pyo
+unsloth_compiled_cache/
