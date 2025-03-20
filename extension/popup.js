@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (problemDetails) {
     problemDiv.innerHTML = `
       <h3>${problemDetails.title}</h3>
-      <p>${problemDetails.description}</p>
       <h4>Starter Code:</h4>
       <pre>${problemDetails.starterCode}</pre>
     `;
